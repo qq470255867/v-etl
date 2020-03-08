@@ -1,0 +1,86 @@
+<assembly>
+    <id>bin</id>
+    <!-- 最终打包成一个用于发布的zip文件 -->
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <!-- Adds dependencies to zip package under lib directory -->
+    <dependencySets>
+        <dependencySet>
+            <!--
+               不使用项目的artifact，第三方jar不要解压，打包进zip文件的lib目录
+           -->
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <!-- 把项目相关的说明文件，打包进zip文件的根目录 -->
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>README*</include>
+                <include>LICENSE*</include>
+                <include>NOTICE*</include>
+            </includes>
+        </fileSet>
+
+        <!-- 把项目的配置文件，打包进zip文件的config目录 -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/</directory>
+            <outputDirectory>config</outputDirectory>
+            <excludes>
+                <exclude>lib/**</exclude>
+            </excludes>
+            <!-- 			<includes>
+                            <include>*.*</include>
+                            <include>*.properties</include>
+                        </includes> -->
+        </fileSet>
+        <!-- 把项目脚本，打包进zip文件的script目录 -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/script/</directory>
+            <outputDirectory>script</outputDirectory>
+            <includes>
+                <include>*.bat</include>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/webapp/WEB-INF</directory>
+            <outputDirectory>WEB-INF</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+        <!-- classes目录下的pfs库文件,不打进zip包 -->
+        <!--          <fileSet>   -->
+        <!--             <directory>${project.basedir}/target/classes</directory>   -->
+        <!--             <outputDirectory>WEB-INF/classes</outputDirectory>   -->
+        <!--             <excludes> -->
+        <!--             	<exclude>pfs_sdk/**</exclude> -->
+        <!--             </excludes> -->
+        <!--         </fileSet> -->
+        <!-- pfs库文件只打包linux相关库文件 -->
+        <fileSet>
+            <directory>${project.basedir}/pfs_sdk/pfs_sdk/linux_x64_Release</directory>
+            <outputDirectory>pfs_sdk/linux_x64_Release</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+
+        <!-- 把项目自己编译出来的jar文件，打包进zip文件的根目录 -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>./</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>
